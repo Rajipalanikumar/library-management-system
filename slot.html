@@ -1,0 +1,102 @@
+<?php
+$mysqli = new mysqli("localhost","root","","project");
+// Check connection
+if ($mysqli -> connect_errno) {
+  echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
+  exit();
+}
+if ( isset( $_POST['submit'] ) )
+{
+	$name=$_POST['name'];
+	$roll=$_POST['roll'];
+	$book=$_POST['book'];
+	$taken=$_POST['taken'];
+	$due=$_POST['due'];
+	$phone=$_POST['phone'];
+	$sql = "INSERT INTO library (name,rollno,book_name,taken_date,due_date,phone_no) VALUES ('$name','$roll','$book','$taken','$due','$phone')";
+	if ($result = $mysqli -> query($sql)) 
+	{
+		// header("Location: view.php");
+		echo "<script type= 'text/javascript'> alert('Record inserted');</script>";
+
+	}
+}
+//Delete query
+if (@isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $mysqli -> query("DELETE FROM library where id =".$id);
+
+    header("Location: slot.php?msg=success");
+}
+
+if(@$_GET['msg'] == 'success'){
+    echo "<script type= 'text/javascript'> alert('Record deleted');</script>";
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Library Detail</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+		.login-page {
+		  width: 360px;
+		  padding: 8% 0 0;
+		  margin: auto;
+		}
+		.form {
+		  position: relative;
+		  z-index: 1;
+		  background: black;
+		  max-width: 360px;
+		  margin: 0 auto 100px;
+		  padding: 45px;
+		  text-align: center;
+		  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+		}
+		.form input {
+		  font-family: "Roboto", sans-serif;
+		  outline: 0;
+		  background: #f2f2f2;
+		  width: 100%;
+		  border: 0;
+		  margin: 0 0 15px;
+		  padding: 15px;
+		  box-sizing: border-box;
+		  font-size: 14px;
+		}
+		.form .message {
+		  margin: 15px 0 0;
+		  color: white;
+		  font-size: 12px;
+		}
+		.form .message a {
+		  color: white;
+		  text-decoration: none;
+		}
+		
+	</style>
+</head>
+<body style="background-image: url(./lib6.webp); background-repeat: no-repeat; background-size: cover;">
+	<center><h2 >Please fill the details</h2></center>
+	<div class="login-page">
+  <div class="form">
+    <form class="login-form" action="slot.php" method="POST">
+      <input type="text" name="name"placeholder="Enter your name" required>
+	  <input type="text" name="roll" placeholder="Enter your Roll No" required>
+	  <input type="text" name="book" placeholder="Book_name" required>
+	  <input type="date" name="taken" required>
+	  <input type="date" name="due" required>
+	  <input type="tel" name="phone" placeholder="Ph number" required>
+      <input type="submit" name="submit">
+      <!-- <p class="message">Not registered? <a href="signup.php">Create an account</a></p> -->
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
